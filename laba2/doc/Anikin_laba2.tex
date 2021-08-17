@@ -1,0 +1,371 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+\usepackage{cmap} % для кодировки шрифтов в pdf
+\usepackage[T1]{fontenc}
+\usepackage[unicode]{hyperref}
+\usepackage{hhline}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{textcomp}
+\usepackage[russian]{babel}
+\usepackage{graphicx} % для вставки картинок
+\usepackage{amssymb,amsfonts,amsmath,amsthm} % математические дополнения от АМС
+\usepackage{indentfirst} % отделять первую строку раздела абзацным отступом тоже
+% Поля
+\usepackage{geometry}
+\geometry{left=2cm}
+\geometry{right=1.5cm}
+\geometry{top=2.4cm}
+\geometry{bottom=2.cm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%     
+
+\linespread{1.5} % полуторный интервал
+\frenchspacing
+
+\begin{document}
+	
+	\begin{titlepage}
+		
+		\begin{center}
+			\begin{large}
+				Санкт-Петербургский Политехнический университет\\ Петра Великого\\
+				Институт прикладной математики и механики\\
+			\end{large}
+			\vspace{0.2cm}
+			Высшая школа прикладной математики и вычислительной физики\\
+			
+		\end{center}
+		
+		\vspace{3cm}
+		\begin{center}
+			\textbf{Отчёт\\ по лабораторной работе №2\\ по дисциплине\\ "математическая статистика"}
+		\end{center}
+		
+		\vspace{3cm}
+		
+		\vbox{%
+			\hfill%
+			\vbox{%
+				\hbox{Выполнил студент:}%
+				\hbox{\break}
+				\hbox{Аникин Александр Алексеевич,}%
+				\hbox{группа 3630102$\backslash$80201}%
+				\hbox{\break}
+				\hbox{\break}
+				\hbox{Проверил:}
+				\hbox{\break}
+				\hbox{к.ф.-м.н., доцент}
+				\hbox{Баженов Александр Николаевич}
+			}%
+		} 
+		\vfill
+		
+		\begin{center}
+			Санкт-Петербург, 2021
+		\end{center}
+		
+	\end{titlepage}
+	\tableofcontents
+	\newpage
+	
+	\listoftables
+	\newpage
+	
+	\section{Постановка задачи}
+	Для следующих распределений:
+	\begin{itemize}
+		\item Нормальное распределение $\textit{N}(\textit{x}, 0, 1)$
+		\item Распределение Коши $\textit{C}(\textit{x}, 0, 1)$
+		\item Распределение Лапласа $\textit{L}(\textit{x}, 0, \frac{1}{\sqrt{2}})$
+		\item Распределение Пуассона $\textit{P}(\textit{k}, 10)$
+		\item Равномерное распределение $\textit{U}(\textit{x}, -\sqrt{3}, \sqrt{3})$
+	\end{itemize}
+	Сгенерировать выборки размером 10, 100 и 1000 элементов.
+	Для каждой выборки вычислить следующие статистические характеристики положения данных: $\overline{\rm x}, med \ x, z_R, z_Q, z_{tr}$. Повторить такие
+	вычисления 1000 раз для каждой выборки и найти среднее характеристик положения и их квадратов:
+	\begin{equation}\label{E(z)}
+		E(z)=z
+	\end{equation}
+	Вычислить оценку дисперсии по формуле:
+	\begin{equation}
+		D(z)=\overline{\rm z^2}-\overline{z}^2\label{D(Z)}
+	\end{equation}
+	Представить полученные данные в виде таблиц.
+	
+	\newpage
+	
+	\section{Теория}
+		\subsection{Рассматриваемые распределения}
+		Плотности:
+			\begin{itemize}
+				\item Нормальное распределение:
+				\begin{equation}\label{norm}
+					\textit{N}(\textit{x}, 0, 1)=\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}
+				\end{equation}
+				
+				\item Распределение Коши:
+				\begin{equation}\label{cauchy}
+					\textit{C}(\textit{x}, 0, 1)=\frac{1}{\pi}\frac{1}{x^2+1}
+				\end{equation}
+				
+				\item Распределение Лапласа:
+				\begin{equation}\label{laplace}
+					\textit{L}(\textit{x}, 0, \frac{1}{\sqrt{2}})=\frac{1}{\sqrt{2}}e^{-\sqrt{2}|x|}
+				\end{equation}
+				
+				\item Распределение Пуассона:
+				\begin{equation}\label{poisson}
+					\textit{P}(\textit{k}, 10)=\frac{10^k}{k!}e^{-10}
+				\end{equation}
+				
+				\item Равномерное распределение:
+				\begin{equation}\label{uniform}
+					\textit{U}(\textit{x}, -\sqrt{3}, \sqrt{3})=
+					\left\{
+					\begin{array}{l}
+						\frac{1}{2\sqrt{3}} \quad \text{при} \quad |x|\leq \sqrt{3}\\
+						0 \quad \quad \text{при} \quad |x|>3}
+					\end{array}
+					\right.
+				\end{equation}
+			\end{itemize}
+		 	
+	 
+		\subsection{Вариационный ряд}
+			Вариационный ряд - последовательность элементов выборки, расположенных в неубывающем порядке. Одинаковые элементы повторяются \cite{num_chars}.
+			
+	 	\subsection{Выборочные характеристики}
+	 		\subsubsection{Характеристики положения}
+	 			\begin{itemize}
+	 				\item Выборочное среднее:
+	 				\begin{equation}\label{mean}
+	 					\overline{x}=\frac{1}{n}\sum_{i=1}^{n}x_i
+	 				\end{equation}
+ 				
+ 					\item Выборочная медиана:
+ 					\begin{equation}\label{median}
+ 						med x=
+ 						\left\{
+	 						\begin{array}{l}
+								x_{l+1} \qquad \text{при} \quad n=2l+1 \\
+	 							\frac{x_l+x_{l+1}}{2} \quad \text{при} \quad n=2l
+ 							\end{array}
+ 						\right.
+ 					\end{equation}
+ 				
+ 					\item Полусумма экстремальных выборочных элементов:
+ 					\begin{equation}\label{half_sum_ext}
+ 						z_R=\frac{x_1+x_n}{2}
+ 					\end{equation}
+ 				
+ 					\item Полусумма квартилей:
+ 						\subitem Выборочная квартиль $z_p$ порядка $p$ определяется формулой:
+		 					\begin{equation}\label{half_sum_quart}
+								z_p=
+								\left\{
+								\begin{array}{l}
+									x_{np+1} \quad \text{при } np \text{ дробном} \\
+									x_{np} \qquad \text{при } np \text{ целом}
+								\end{array}
+								\right.
+		 					\end{equation}
+ 						\subitem Полусумма квартилей:
+ 							\begin{equation}
+ 								z_Q=\frac{z_{\frac{1}{4}}+z_{\frac{3}{4}}}{2}
+	 						\end{equation}
+ 					
+ 					\item Усечённое среднее:
+ 						\begin{equation}\label{trunc_mean}
+ 							z_{tr}=\frac{1}{n-2r}\sum_{i=r+1}^{n-r}x_i,\quad r\approx\frac{n}{4}
+ 						\end{equation}
+	 			\end{itemize}
+			\subsubsection{Характеристики рассеяния}
+				\begin{itemize}
+					\item Выборочная дисперсия:
+					\begin{equation}
+						D=\frac{1}{n}\sum_{i=1}^{n}(x_i-\overline{x})^2
+					\end{equation}
+				\end{itemize}
+	\newpage
+	
+	\section{Реализация}
+	Лабораторная работа выполнена на языке Python 3.8 с помощью загружаемого пакета SciPy. Исходный код лабораторной работы находится на GitLab репозитории.
+	\newpage
+	
+	\section{Результаты}
+		\subsection{Характеристики положения и рассеяния}
+		Интервальная оценка $E$ рассчитывалась следующим образом:\\
+		\begin{equation}\label{E}
+			E=E(z)\pm{\sqrt{D(z)}}
+		\end{equation}
+			\begin{table}[h!]
+				\label{tabular:normal}
+				\begin{center}
+					\begin{tabular}{|c|c|c|c|c|c|} 
+						
+						\hline
+						normal n=10 & \ & \ & \ & \ & \ \\ \hline
+						\ & $\overline{x}$ (\ref{mean}) & $med \ x$ (\ref{median}) & $z_R$ (\ref{half_sum_ext}) & $z_Q$ (\ref{half_sum_quart}) & $z_tr$ (\ref{trunc_mean})\\ \hline
+						E(z) (\ref{E(z)}) & 0.0011 & 0.2488 & 0.0064 & 0.2206 & 0.1082 \\ \hline
+						D(z) (\ref{D(Z)}) & 0.0923   & 0.1326 & 0.1794 &   0.1089   &  0.0750 \\ \hline
+						E (\ref{E})& 0 & 0 & 0 & 0 & 0\\\hline
+						\ & \ & \ & \ & \ & \ \\ \hline
+						
+						normal n=100 & \ & \ & \ & \ & \ \\ \hline
+						\ & $\overline{x}$ & $med \ x$  & $z_R$  & $z_Q$  & $z_tr$ \\ \hline
+						E(z) & 0.0009 & 0.02699 &  0.0035 & 0.0233 & 0.0136 \\ \hline
+						D(z) & 0.0095   & 0.0152 & 0.0901 &  0.0124   &  0.0115 \\ \hline
+						E & 0.0 & 0 & 0 & 0 & 0\\\hline
+						\ & \ & \ & \ & \ & \ \\ \hline
+						
+						normal n=1000 & \ & \ & \ & \ & \ \\ \hline
+						\ & $\overline{x}$ & $med \ x$  & $z_R$  & $z_Q$  & $z_tr$ \\ \hline
+						E(z) & -0.0002 & 0.0037 &  0.0083 & 0.0022 & 0.0019 \\ \hline
+						D(z) & 0.0010   & 0.0016 & 0.0651 &  0.0012   &  0.0012 \\ \hline
+						E & 0.0 & 0.0 & 0 & 0.0 & 0.0\\\hline
+						
+					\end{tabular}
+				\end{center}
+			\caption{Нормальное распределение (\ref{norm}), выборочные характеристики}
+			\end{table}
+		
+			\begin{table}[h!]
+				\label{tabular:cauchy}
+				\begin{center}
+					\begin{tabular}{|c|c|c|c|c|c|} 
+						
+						\hline
+						cauchy n=10 & \ & \ & \ & \ & \ \\ \hline
+						\ & $\overline{x}$ & $med \ x$ & $z_R$ & $z_Q$ & $z_tr$ \\ \hline
+						E(z) & -0.7997 & 0.3711 & -3.8942 & 0.7932 & 0.2012 \\ \hline
+						D(z) & 1496.1612  & 0.3888 & 37210.1136 &  4.0337  &  0.3009 \\ \hline
+						E & - & 0 & - & - & 0\\\hline
+						\ & \ & \ & \ & \ & \ \\ \hline
+						
+						cauchy n=100 & \ & \ & \ & \ & \ \\ \hline
+						\ & $\overline{x}$ & $med \ x$  & $z_R$  & $z_Q$  & $z_tr$ \\ \hline
+						E(z) & 1.7012 & 0.0394 &  83.5465 & 0.05417 & 0.02892 \\ \hline
+						D(z) & 23276.8756   & 0.0266 & 57935136.5867 &  0.0546   &  0.0274 \\ \hline
+						E & - & 0 & - & 0 & 0\\\hline
+						\ & \ & \ & \ & \ & \ \\ \hline
+						
+						cauchy n=1000 & \ & \ & \ & \ & \ \\ \hline
+						\ & $\overline{x}$ & $med \ x$  & $z_R$  & $z_Q$  & $z_tr$ \\ \hline
+						E(z) & -0.7303 & 0.0007 &  -322.6777 & 0.0047 & 0.0003 \\ \hline
+						D(z) & 413.70   & 0.0025 & 101229229.65 &  0.0052   &  0.0027 \\ \hline
+						E & - & 0.0 & - & 0.0 & 0.0\\\hline
+						
+					\end{tabular}
+				\end{center}
+				\caption{Распределение Коши (\ref{cauchy}), выборочные характеристики}
+			\end{table}
+			
+			\begin{table}[h!]
+				\label{tabular:laplace}
+				\begin{center}
+					\begin{tabular}{|c|c|c|c|c|c|} 
+						
+						\hline
+						laplace n=10 & \ & \ & \ & \ & \ \\ \hline
+						\ & $\overline{x}$ & $med \ x$ & $z_R$ & $z_Q$ & $z_tr$ \\ \hline
+						E(z) & 0.0069 & 0.1944 & 0.0087 & 0.2110 & 0.0922 \\ \hline
+						D(z) & 0.1113  & 0.088 & 0.4876 &  0.1093  &  0.0545 \\ \hline
+						E & 0 & 0 & 0 & 0 & 0\\\hline
+						\ & \ & \ & \ & \ & \ \\ \hline
+						
+						laplace n=100 & \ & \ & \ & \ & \ \\ \hline
+						\ & $\overline{x}$ & $med \ x$  & $z_R$  & $z_Q$  & $z_tr$ \\ \hline
+						E(z) & 0.0019 & 0.0164 &  -0.0237 & 0.0202 & 0.0097 \\ \hline
+						D(z) & 0.0101   & 0.0060 & 0.4103 &  0.0095 & 0.0060 \\ \hline
+						E & 0.0 & 0.0 & 0 & 0 & 0.0\\\hline
+						\ & \ & \ & \ & \ & \ \\ \hline
+						
+						laplace n=1000 & \ & \ & \ & \ & \ \\ \hline
+						\ & $\overline{x}$ & $med \ x$  & $z_R$  & $z_Q$  & $z_tr$ \\ \hline
+						E(z) & -0.0013 & 0.0014 &  -0.058 & 0.0012 & 0.00026 \\ \hline
+						D(z) & 0.0010   & 0.00052 & 0.45 &  0.0010   &  0.00063 \\ \hline
+						E & 0.0 & 0.0 & 0 & 0.0 & 0.0\\\hline
+						
+					\end{tabular}
+				\end{center}
+				\caption{Распределение Лапласа (\ref{laplace}), выборочные характеристики}
+			\end{table}
+		
+			\begin{table}[h!]
+				\label{tabular:poisson}
+				\begin{center}
+					\begin{tabular}{|c|c|c|c|c|c|} 
+						
+						\hline
+						poisson n=10 & \ & \ & \ & \ & \ \\ \hline
+						\ & $\overline{x}$ & $med \ x$ & $z_R$ & $z_Q$ & $z_tr$ \\ \hline
+						E(z) & 9.96 & 10.608 & 10.2545 & 10.608 & 8.542 \\ \hline
+						D(z) & 1.0271  & 1.55 & 1.9251 &  1.24  &  0.86 \\ \hline
+						E & $9^{+1}_{-1}$ & $10^{+1}_{-1}$ & $10^{+2}_{-1}$ & $10^{+1}_{-1}$ & $8^{+1}_{-1}$\\\hline
+						\ & \ & \ & \ & \ & \ \\ \hline
+						
+						poisson n=100 & \ & \ & \ & \ & \ \\ \hline
+						\ & $\overline{x}$ & $med \ x$  & $z_R$  & $z_Q$  & $z_tr$ \\ \hline
+						E(z) & 10.00 & 9.909 &  10.882 & 9.9805 & 9.70 \\ \hline
+						D(z) & 0.11   & 0.20 & 1.015 &  0.16 & 0.12 \\ \hline
+						E & $10^{+0}_{-1}$ & $9^{+1}_{-0}$ & $10^{+1}_{-1}$ & $9^{+1}_{-0}$ & $9^{+1}_{-0}$\\\hline
+						\ & \ & \ & \ & \ & \ \\ \hline
+						
+						poisson n=1000 & \ & \ & \ & \ & \ \\ \hline
+						\ & $\overline{x}$ & $med \ x$  & $z_R$  & $z_Q$  & $z_tr$ \\ \hline
+						E(z) & 10.0045 & 9.997 &  11.6715 & 9.99675 & 9.85 \\ \hline
+						D(z) & 0.0098   & 0.0025 & 0.61 &  0.0020  &  0.011 \\ \hline
+						E & $10^{+0}_{-1}$ & $9^{+1}_{-0}$ & $11^{+1}_{-1}$ & $9^{+1}_{-0}$ & $9^{+1}_{-0}$ \\\hline
+						
+					\end{tabular}
+				\end{center}
+				\caption{Распределение Пуассона (\ref{poisson}), выборочные характеристики}
+			\end{table}
+			
+			\begin{table}[h!]
+				\label{tabular:uniform}
+				\begin{center}
+					\begin{tabular}{|c|c|c|c|c|c|} 
+						
+						\hline
+						uniform n=10 & \ & \ & \ & \ & \ \\ \hline
+						\ & $\overline{x}$ & $med \ x$ & $z_R$ & $z_Q$ & $z_tr$ \\ \hline
+						E(z) & -0.0085 & 0.3012 & -0.0020 & 0.2353 & 0.1212 \\ \hline
+						D(z) & 0.0974 & 0.2141 & 0.0484 &  0.1312  &  0.1254 \\ \hline
+						E & 0 & 0 & 0 & 0 & 0\\\hline
+						\ & \ & \ & \ & \ & \ \\ \hline
+						
+						uniform n=100 & \ & \ & \ & \ & \ \\ \hline
+						\ & $\overline{x}$ & $med \ x$  & $z_R$  & $z_Q$  & $z_tr$ \\ \hline
+						E(z) & -0.0021 & 0.0395 &  -0.0009 & 0.0211 & 0.0157 \\ \hline
+						D(z) & 0.0113   & 0.0313 & 0.0005 &  0.0154 & 0.0208 \\ \hline
+						E & 0 & 0 & 0.0 & 0 & 0\\\hline
+						\ & \ & \ & \ & \ & \ \\ \hline
+						
+						uniform n=1000 & \ & \ & \ & \ & \ \\ \hline
+						\ & $\overline{x}$ & $med \ x$  & $z_R$  & $z_Q$  & $z_tr$ \\ \hline
+						E(z) & -0.0006 & 0.0012 & 0.0001 & 0.0024 & 0.0008 \\ \hline
+						D(z) & 0.0010   & 0.0028 & 0.0000 &  0.0015  &  0.0019 \\ \hline
+						E & 0.0 & 0.0 & 0.00 & 0.0 & 0.0\\\hline
+						
+					\end{tabular}
+				\end{center}
+				\caption{Равномерное распределение (\ref{uniform}), выборочные характеристики}
+			\end{table}
+		\clearpage
+	\newpage
+	
+	\begin{thebibliography}{1}
+		\addcontentsline{toc}{section}{\bibname}
+		\bibitem{num_chars}  Вероятностные разделы математики. Учебник для бакалавров технических направлений.//Под ред. Максимова Ю.Д. — Спб.: «Иван Федоров», 2001. — 592 c., илл.
+	\end{thebibliography}
+	
+		
+\end{document}
